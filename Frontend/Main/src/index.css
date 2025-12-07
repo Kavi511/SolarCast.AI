@@ -1,0 +1,346 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* AI Solar Forecasting Design System - Space Tech meets Clean Energy */
+
+@layer base {
+  :root {
+    /* Core Background System */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    /* Card System */
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    /* Popover System */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    /* Primary - Electric Blue */
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --primary-glow: 217 91% 70%;
+
+    /* Secondary - Deep Space */
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+
+    /* Muted System */
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    /* Accent - Solar Orange */
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --accent-glow: 32 95% 70%;
+
+    /* Success - Energy Green */
+    --success: 142 76% 36%;
+    --success-foreground: 210 40% 98%;
+
+    /* Destructive */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Border and Input */
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+
+    /* Custom Gradients */
+    --gradient-space: linear-gradient(135deg, hsl(var(--background)), hsl(220 20% 6%));
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-solar: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--accent-glow)));
+    --gradient-data: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)));
+
+    /* Custom Shadows */
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.3);
+    --shadow-solar: 0 0 30px hsl(var(--accent) / 0.2);
+    --shadow-card: 0 8px 32px hsl(220 27% 4% / 0.4);
+
+    /* Animation Variables */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Core Background System - Dark Space Theme */
+    --background: 220 20% 6%;
+    --foreground: 210 40% 98%;
+
+    /* Card System - Dark Cards */
+    --card: 220 20% 8%;
+    --card-foreground: 210 40% 98%;
+
+    /* Popover System */
+    --popover: 220 20% 8%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Primary - Electric Blue (Brighter in Dark Mode) */
+    --primary: 217 91% 70%;
+    --primary-foreground: 220 20% 6%;
+    --primary-glow: 217 91% 80%;
+
+    /* Secondary - Deep Space */
+    --secondary: 220 20% 12%;
+    --secondary-foreground: 210 40% 98%;
+
+    /* Muted System */
+    --muted: 220 20% 12%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    /* Accent - Solar Orange (Brighter in Dark Mode) */
+    --accent: 32 95% 70%;
+    --accent-foreground: 220 20% 6%;
+    --accent-glow: 32 95% 80%;
+
+    /* Success - Energy Green */
+    --success: 142 76% 45%;
+    --success-foreground: 220 20% 6%;
+
+    /* Destructive */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Border and Input */
+    --border: 220 20% 15%;
+    --input: 220 20% 15%;
+    --ring: 217.2 91.2% 59.8%;
+
+    /* Custom Gradients for Dark Mode */
+    --gradient-space: linear-gradient(135deg, hsl(220 20% 6%), hsl(220 20% 12%));
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 70%), hsl(217 91% 80%));
+    --gradient-solar: linear-gradient(135deg, hsl(32 95% 70%), hsl(32 95% 80%));
+    --gradient-data: linear-gradient(90deg, hsl(217 91% 70%), hsl(32 95% 70%));
+
+    /* Custom Shadows for Dark Mode */
+    --shadow-glow: 0 0 40px hsl(217 91% 80% / 0.4);
+    --shadow-solar: 0 0 30px hsl(32 95% 80% / 0.3);
+    --shadow-card: 0 8px 32px hsl(0 0% 0% / 0.6);
+
+    /* Sidebar Dark Mode */
+    --sidebar-background: 220 20% 8%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 217 91% 70%;
+    --sidebar-primary-foreground: 220 20% 6%;
+    --sidebar-accent: 220 20% 12%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 220 20% 15%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground transition-colors duration-300;
+  }
+
+  /* Smooth scrolling for navigation */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Force dark background for main page */
+  body:has([data-main-page="true"]) {
+    @apply bg-slate-900;
+  }
+
+  /* Dark mode transitions for smooth theme switching */
+  html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Ensure all elements transition smoothly */
+  *, *::before, *::after {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+@layer utilities {
+  /* Gradient Utilities */
+  .bg-gradient-space {
+    background: var(--gradient-space);
+  }
+  
+  .bg-gradient-primary {
+    background: var(--gradient-primary);
+  }
+  
+  .bg-gradient-solar {
+    background: var(--gradient-solar);
+  }
+  
+  .bg-gradient-data {
+    background: var(--gradient-data);
+  }
+
+  /* Shadow Utilities */
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .shadow-solar {
+    box-shadow: var(--shadow-solar);
+  }
+  
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Animation Utilities */
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  
+  .transition-spring {
+    transition: var(--transition-spring);
+  }
+
+  /* Hover Effects */
+  .hover-glow:hover {
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-2px);
+  }
+  
+  .hover-solar:hover {
+    box-shadow: var(--shadow-solar);
+  }
+
+  /* Cosmic Theme Classes for Login/Register Pages */
+  .cosmic-glow {
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.3), 0 0 80px rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+
+  .dark .cosmic-glow {
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.5), 0 0 80px rgba(59, 130, 246, 0.2);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+  }
+
+  .text-gradient-primary {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .dark .text-gradient-primary {
+    background: linear-gradient(135deg, #60a5fa, #93c5fd);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-cosmic-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .dark .bg-cosmic-card {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .text-cosmic-white {
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .border-cosmic {
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .dark .border-cosmic {
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+
+  /* Dark mode specific utilities */
+  .dark-mode-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Smooth typewriter animation for hero text */
+  @keyframes typewriter {
+    0% {
+      width: 0;
+      opacity: 0.8;
+    }
+    10% {
+      opacity: 1;
+    }
+    100% {
+      width: 100%;
+      opacity: 1;
+    }
+  }
+  
+  /* Professional floating animation for hero text */
+  @keyframes spaceFloat {
+    0%, 100% {
+      transform: translateY(0px);
+      opacity: 0.95;
+    }
+    50% {
+      transform: translateY(-5px);
+      opacity: 1;
+    }
+  }
+  
+  /* Blinking cursor animation */
+  @keyframes blink {
+    0%, 50% {
+      border-right-color: white;
+    }
+    51%, 100% {
+      border-right-color: transparent;
+    }
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-muted;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/30 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/50;
+}
+
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar-track {
+  @apply bg-muted;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/30;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted-foreground/50;
+}
