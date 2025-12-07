@@ -1,6 +1,6 @@
-# Solar AI - Full-Stack AI/ML Application
+# SolarCast.AI - Full Stack AI/ML Application 
 
-A production-ready full-stack application that leverages AI and Machine Learning to provide solar energy predictions, cloud detection, and cloud forecasting using satellite imagery and Google Earth Engine integration.
+This project focuses on using Artificial Intelligence (AI) to predict cloud cover by analyzing satellite images, in order to improve the efficiency of solar energy systems (like solar panels and solar farms).
 
 ## 🌟 Features
 
