@@ -1,4 +1,4 @@
-# SolarCast.AI - Full Stack AI/ML Application 
+# 🛰️🌍SolarCast.AI - Full Stack AI/ML Application⚡☀️
 
 ### 📌 **Key Idea**
 
