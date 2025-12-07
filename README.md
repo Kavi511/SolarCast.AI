@@ -1,6 +1,8 @@
 # SolarCast.AI - Full Stack AI/ML Application 
 
-This project focuses on using Artificial Intelligence (AI) to predict cloud cover by analyzing satellite images, in order to improve the efficiency of solar energy systems (like solar panels and solar farms).
+### 📌 **Key Idea**
+
+Solar panels produce less energy when clouds block sunlight. If we can accurately **forecast cloud movement and density**, solar energy systems can be adjusted **in real-time** or **planned more efficiently** — for example, by storing more energy in advance or adjusting grid supply strategies.
 
 ## 🌟 Features
 
