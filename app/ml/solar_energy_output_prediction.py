@@ -27,15 +27,17 @@ import warnings
 import requests
 import json
 import time
+import os
 from io import BytesIO
 from PIL import Image
 warnings.filterwarnings('ignore')
 
 logger = structlog.get_logger()
 
-# API Configuration
-OPENWEATHER_API_KEY = "f025c87528ef99d1c617f5edc21f1920"  # Predefined API key
-NREL_API_KEY = "gdX0AjcTAUaBfMkIqyEW5NChUSjljCyoMGCSTlYa"  # Updated NREL API key
+# API Configuration - Use environment variables
+# Set OPENWEATHERMAP_API_KEY and NREL_API_KEY in your .env file
+OPENWEATHER_API_KEY = os.getenv("OPENWEATHERMAP_API_KEY", "")
+NREL_API_KEY = os.getenv("NREL_API_KEY", "")
 
 # Custom location configuration for solar energy prediction
 CUSTOM_LOCATION_CONFIG = {
@@ -1980,17 +1982,28 @@ if __name__ == "__main__":
         print(f"\n🔑 API CONFIGURATION")
         print("-" * 40)
         
-        print(f"   OpenWeatherMap API key: {OPENWEATHER_API_KEY}")
-        print(f"   NREL API key: {NREL_API_KEY}")
+        # Check if API keys are set in environment
+        env_openweather = os.getenv("OPENWEATHERMAP_API_KEY", "")
+        env_nrel = os.getenv("NREL_API_KEY", "")
         
-        openweather_api_key = input("   OpenWeatherMap API key (or press Enter to use predefined): ").strip()
-        nrel_api_key = input("   NREL API key (or press Enter to use predefined): ").strip()
+        if env_openweather:
+            print(f"   OpenWeatherMap API key: {'*' * 20} (from environment)")
+        else:
+            print(f"   OpenWeatherMap API key: Not set in environment")
         
-        # Use predefined keys if none provided
+        if env_nrel:
+            print(f"   NREL API key: {'*' * 20} (from environment)")
+        else:
+            print(f"   NREL API key: Not set in environment")
+        
+        openweather_api_key = input("   OpenWeatherMap API key (or press Enter to use environment variable): ").strip()
+        nrel_api_key = input("   NREL API key (or press Enter to use environment variable): ").strip()
+        
+        # Use environment variables if none provided
         if not openweather_api_key:
-            openweather_api_key = OPENWEATHER_API_KEY
+            openweather_api_key = env_openweather
         if not nrel_api_key:
-            nrel_api_key = NREL_API_KEY
+            nrel_api_key = env_nrel
         
         if openweather_api_key and nrel_api_key:
             use_real_data = True
