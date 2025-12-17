@@ -32,3 +32,6 @@ scipy>=1.7.0
 # Jupyter Support (optional)
 jupyter>=1.0.0
 ipykernel>=6.0.0
+filelock>=3.20.1 # not directly required, pinned by Snyk to avoid a vulnerability
+fonttools>=4.61.0 # not directly required, pinned by Snyk to avoid a vulnerability
+tornado>=6.5.3 # not directly required, pinned by Snyk to avoid a vulnerability
