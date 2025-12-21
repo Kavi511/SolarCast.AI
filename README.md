@@ -278,12 +278,13 @@ POSTGRES_PASSWORD=your_password
 POSTGRES_DB=sola_ai
 
 # JWT Configuration
-SECRET_KEY=your-secret-key-here
+SECRET_KEY=your-secret-key-here  # REQUIRED: Generate a strong random key for production
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 
 # Google Earth Engine
 GEE_CREDENTIALS_PATH=path/to/credentials.json
+GEE_PROJECT_ID=your-gcp-project-id  # Optional: Your Google Cloud Project ID for GEE
 
 # OpenWeatherMap API
 OPENWEATHERMAP_API_KEY=your-api-key-here
@@ -396,6 +397,7 @@ For detailed API documentation, visit http://localhost:8000/docs after starting 
 | `ALGORITHM` | JWT algorithm | No (default: HS256) |
 | `ACCESS_TOKEN_EXPIRE_MINUTES` | Token expiry | No (default: 30) |
 | `GEE_CREDENTIALS_PATH` | GEE credentials path | Yes (for ML features) |
+| `GEE_PROJECT_ID` | Google Cloud Project ID for GEE | No (has default) |
 | `OPENWEATHERMAP_API_KEY` | OpenWeatherMap API key | Yes (for weather) |
 
 ### ML Model Configuration

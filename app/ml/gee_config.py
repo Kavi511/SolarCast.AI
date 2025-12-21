@@ -15,13 +15,16 @@ import requests
 from io import BytesIO
 from PIL import Image
 import warnings
+import os
 
 logger = structlog.get_logger()
 
 class GEEConfig:
     """Centralized Google Earth Engine configuration"""
     
-    def __init__(self, project_id: str = 'instant-text-459407-v4'):
+    def __init__(self, project_id: str = None):
+        if project_id is None:
+            project_id = os.getenv("GEE_PROJECT_ID", "instant-text-459407-v4")
         self.project_id = project_id
         self.is_initialized = False
         self._initialize_gee()
@@ -260,7 +263,7 @@ def get_gee_config() -> GEEConfig:
     """Get the global GEE configuration instance"""
     return gee_config
 
-def initialize_gee(project_id: str = 'instant-text-459407-v4') -> GEEConfig:
+def initialize_gee(project_id: str = None) -> GEEConfig:
     """Initialize GEE with custom project ID"""
     global gee_config
     gee_config = GEEConfig(project_id)

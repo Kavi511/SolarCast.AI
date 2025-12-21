@@ -67,9 +67,11 @@ app = FastAPI(
 )
 
 # CORS: Allow local dev frontends
+# ⚠️ SECURITY WARNING: In production, replace "*" with specific allowed origins
+# Example: allow_origins=["https://yourdomain.com", "https://www.yourdomain.com"]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # TODO: Restrict to specific domains in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
