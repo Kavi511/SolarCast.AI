@@ -14,14 +14,8 @@ Solar panels produce less energy when clouds block sunlight. If we can accuratel
 - **System Engagement Tracking**: Real-time usage analytics using OpenWeatherMap API
 
 ### Technical Features
-- 🔐 JWT-based authentication and authorization
-- 📊 Interactive dashboards with real-time charts
-- 🎨 Modern UI built with React, TypeScript, and Tailwind CSS
-- 🚀 FastAPI backend with async/await support
-- 🤖 Multiple ML models with confidence scoring
-- 📈 Model performance monitoring
-- 🌍 Google Earth Engine integration
-- 🗄️ PostgreSQL database with SQLAlchemy ORM
+
+The application features JWT-based authentication and authorization, interactive dashboards with real-time charts, a modern UI built with React, TypeScript, and Tailwind CSS, a FastAPI backend with async/await support, multiple ML models with confidence scoring, model performance monitoring, Google Earth Engine integration, and a PostgreSQL database with SQLAlchemy ORM.
 
 ---
 
