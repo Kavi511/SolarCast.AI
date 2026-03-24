@@ -84,6 +84,7 @@ htmlcov/
 *.ipynb
 
 # ML Models (keep trained models, ignore cache)
+*.pth
 *.pth.bak
 *.h5.bak
 *.ckpt.bak
