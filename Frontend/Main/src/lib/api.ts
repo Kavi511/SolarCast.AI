@@ -1,7 +1,7 @@
-// API Base Configuration
+// Central backend URL used by all API requests.
 const API_BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8000').trim();
 
-// Types for API responses
+// Shared response types from the backend.
 export interface Site {
   id: number;
   name: string;
@@ -209,7 +209,7 @@ export interface TokenResponse {
   user: User;
 }
 
-// API Client class
+// Small wrapper around fetch so API calls stay consistent.
 class ApiClient {
   private baseURL: string;
 
@@ -225,7 +225,7 @@ class ApiClient {
     endpoint: string,
     options: RequestInit = {}
   ): Promise<T> {
-    const base = this.baseURL.trim().replace(/\/$/, ''); // Remove trailing slash if present
+    const base = this.baseURL.trim().replace(/\/$/, ''); // Keep URL clean by removing trailing slash.
     const path = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
     const url = `${base}${path}`;
     const token = this.getAuthToken();
@@ -242,7 +242,7 @@ class ApiClient {
     try {
       const response = await fetch(url, config);
       
-      // CRITICAL: Handle non-OK responses - MUST reject for 401/403 errors
+      // Convert any non-OK response into a thrown error.
       if (!response.ok) {
         const statusCode = response.status;
         console.error(`HTTP ERROR: Status ${statusCode}`);
@@ -257,12 +257,12 @@ class ApiClient {
           errorDetail = errorData;
           console.error("Error Details:", errorDetail);
         } catch {
-          // If JSON parsing fails, use status text
+          // If error JSON is missing, fall back to status text.
           errorMessage = response.statusText || errorMessage;
           console.error("Could not parse error JSON, using status text");
         }
         
-        // Log specific error codes
+        // Add clearer logs for common backend status codes.
         if (statusCode === 401) {
           console.error("401 UNAUTHORIZED: Invalid credentials");
         } else if (statusCode === 400) {
@@ -271,17 +271,17 @@ class ApiClient {
           console.error("500 INTERNAL SERVER ERROR: Server error");
         }
         
-        // Create a proper error that will be caught
+        // Build a richer error so the UI can show better feedback.
         const error = new Error(errorMessage);
         (error as any).status = statusCode;
         (error as any).response = response;
         (error as any).detail = errorDetail;
         
         console.error(`THROWING ERROR: ${errorMessage}`);
-        throw error; // CRITICAL: This MUST throw to prevent success
+        throw error; // Throw here so failed responses never look successful.
       }
       
-      // Handle empty responses
+      // Some endpoints return no body; treat that as null.
       const text = await response.text();
       if (!text) {
         return null as T;
@@ -296,23 +296,23 @@ class ApiClient {
     } catch (error: any) {
       console.error('API request failed:', error);
       
-      // Handle network errors specifically
+      // Give a friendlier message when backend is unreachable.
       if (error instanceof TypeError && error.message === 'Failed to fetch') {
         const url = new URL(this.baseURL);
         throw new Error(`Cannot connect to backend server at ${this.baseURL}. Please make sure the backend is running on port ${url.port || '8001'}.`);
       }
       
-      // Re-throw with better message if it's already an Error
+      // Keep the original error details when possible.
       if (error instanceof Error) {
         throw error;
       }
       
-      // Fallback for unknown errors
+      // Last-resort fallback for unknown error shapes.
       throw new Error(`Request failed: ${error?.message || 'Unknown error'}`);
     }
   }
 
-  // Auth API
+  // Authentication endpoints.
   async register(userData: UserRegister): Promise<User> {
     return this.request<User>('/api/auth/register', {
       method: 'POST',
@@ -321,7 +321,7 @@ class ApiClient {
   }
 
   async login(credentials: UserLogin): Promise<TokenResponse> {
-    // CRITICAL: Clear any existing tokens before attempting login
+    // Clear old session state before a new login attempt.
     this.logout();
     
     console.log("API CLIENT: Starting login request");
@@ -342,7 +342,7 @@ class ApiClient {
         tokenType: response?.token_type
       });
       
-      // CRITICAL: Only store token if login was successful and we have a valid response
+      // Save auth data only when response includes both token and user.
       if (response && response.access_token && response.user) {
         console.log("API CLIENT: Storing token and user data");
         localStorage.setItem('auth_token', response.access_token);
@@ -350,7 +350,7 @@ class ApiClient {
         console.log("API CLIENT: Token and user data stored successfully");
         return response;
       } else {
-        // Invalid response - clear tokens and throw error
+        // If response is incomplete, reset auth state and fail.
         console.error("API CLIENT: Invalid response structure");
         this.logout();
         throw new Error('Invalid response from server - authentication failed');
@@ -360,10 +360,10 @@ class ApiClient {
       console.error("Error Status:", error?.status || "Unknown");
       console.error("Error Message:", error?.message || "Unknown error");
       
-      // CRITICAL: Ensure tokens are cleared on ANY error (401, network error, etc.)
+      // On any login failure, clear tokens to avoid stale sessions.
       this.logout();
       
-      // Re-throw error so Login component can display it
+      // Re-throw so the Login page can display the message.
       throw error;
     }
   }
@@ -388,7 +388,7 @@ class ApiClient {
     localStorage.removeItem('user');
   }
 
-  // Sites API
+  // Sites endpoints.
   async getSites(): Promise<Site[]> {
     return this.request<Site[]>('/api/sites');
   }
@@ -410,7 +410,7 @@ class ApiClient {
     });
   }
 
-  // Observations API
+  // Observation endpoints.
   async getObservations(siteId: number): Promise<Observation[]> {
     return this.request<Observation[]>(`/api/sites/${siteId}/observations`);
   }
@@ -423,7 +423,7 @@ class ApiClient {
     });
   }
 
-  // ML API
+  // Machine-learning endpoints.
   async detectCloudCover(image: File): Promise<{ cloud_cover_pct: number }> {
     const formData = new FormData();
     formData.append('image', image);
@@ -499,12 +499,12 @@ class ApiClient {
     return response.json();
   }
 
-  // Health check
+  // Basic backend health endpoint.
   async healthCheck(): Promise<{ status: string; service: string }> {
     return this.request<{ status: string; service: string }>('/');
   }
 
-  // Weather API status check
+  // Weather provider status endpoint.
   async weatherStatus(): Promise<{ status: string; message: string }> {
     return this.request<{ status: string; message: string }>('/api/ml/weather-status');
   }
@@ -513,16 +513,16 @@ class ApiClient {
     return this.request<{ status: string; message: string }>('/api/ml/gee-status');
   }
 
-  // Models status check
+  // Model availability status endpoint.
   async modelsStatus(): Promise<{ status: string; message: string }> {
     return this.request<{ status: string; message: string }>('/api/ml/models-status');
   }
 
-  // Models health metrics
+  // Model health metrics endpoint.
   async modelsHealth(): Promise<{ models: any[]; timestamp: number }> {
     return this.request<{ models: any[]; timestamp: number }>('/api/ml/models-health');
   }
 }
 
-// Export singleton instance
+// Reuse one client instance across the app.
 export const apiClient = new ApiClient(API_BASE_URL);

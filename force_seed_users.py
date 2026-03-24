@@ -4,19 +4,19 @@ import sys
 import getpass
 
 
-# Instructions
+# Quick intro so you know what this script is about to do.
 print("=" * 60)
 print("Force Seed Users Script")
 print("=" * 60)
 print()
 
-# Set default database environment variables if not set
+# Fill in local DB defaults if they are not already set.
 os.environ.setdefault("POSTGRES_HOST", "localhost")
 os.environ.setdefault("POSTGRES_PORT", "5432")
 os.environ.setdefault("POSTGRES_USER", "postgres")
 os.environ.setdefault("POSTGRES_DB", "sola_ai")
 
-# Check if password is set, if not prompt for it
+# Ask for DB password only when it is not in the environment.
 if not os.getenv("POSTGRES_PASSWORD"):
     print("POSTGRES_PASSWORD not found in environment.")
     print("Please enter your PostgreSQL password:")
@@ -55,7 +55,7 @@ def main():
     
     db = SessionLocal()
     try:
-        # Delete all existing users
+        # Start clean by removing any existing users.
         existing_count = db.query(User).count()
         if existing_count > 0:
             print(f"\nFound {existing_count} existing users. Deleting...")
@@ -63,19 +63,19 @@ def main():
             db.commit()
             print("✓ Deleted existing users")
         
-        # Seed new users
+        # Recreate demo users.
         print("\nCreating demo users...")
         count = seed_dummy_users(db)
         print(f"✓ Created {count} demo users")
         
-        # Verify and test
+        # Verify what was created and print it.
         users = db.query(User).all()
         print(f"\n✓ Total users in database: {len(users)}")
         print("\nCreated users:")
         for user in users:
             print(f"  - {user.email} ({user.company_name})")
         
-        # Test password
+        # Run a quick password check for the demo login.
         test_user = get_user_by_email(db, "demo1@gmail.com")
         if test_user:
             is_valid = verify_password("DemoPass123!", test_user.password_hash)

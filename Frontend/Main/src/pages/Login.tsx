@@ -24,7 +24,7 @@ const Login = () => {
     setError("");
     setSuccess("");
     
-    // Validate empty fields
+    // Start with simple input checks before calling the API.
     const emailTrimmed = email.trim();
     const passwordTrimmed = password.trim();
     
@@ -34,7 +34,7 @@ const Login = () => {
       return;
     }
     
-    // Validate email format
+    // If email is provided, make sure it looks valid.
     if (emailTrimmed) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(emailTrimmed)) {
@@ -46,27 +46,27 @@ const Login = () => {
     
     setLoading(true);
 
-    // ALERT: Starting login process
+    // Fresh login attempt: reset auth state first.
     console.log("LOGIN PROCESS STARTED");
     console.log("Sending request to backend:", { email, password: "***" });
 
-    // CRITICAL: Clear any existing tokens and auth state BEFORE login attempt
+    // Clear old tokens so we do not carry stale auth into a new session.
     apiClient.logout();
     setIsLoggedIn(false);
     setUser(null);
 
     try {
-      // ALERT: Making API call
+      // Send credentials to the backend for verification.
       console.log("API CALL: POST /api/auth/login");
       
-      // CRITICAL: Direct backend call - backend MUST validate credentials
+      // Backend is the source of truth for credential validation.
       const response = await apiClient.login({ email, password });
       
-      // ALERT: Received response
+      // We got a response back from the backend.
       console.log("RESPONSE RECEIVED:", response);
       console.log("Response Status: 200 OK");
       
-      // CRITICAL: Verify response is complete and valid
+      // Validate the response shape before trusting it.
       if (!response) {
         console.error("ERROR: No response from server");
         throw new Error("Invalid response from server - authentication failed");
@@ -82,12 +82,12 @@ const Login = () => {
         throw new Error("Invalid response from server - no user data");
       }
       
-      // ALERT: Response validation passed
+      // Response looks good, so we can continue.
       console.log("RESPONSE VALIDATION: All checks passed");
       console.log("Token received:", response.access_token.substring(0, 20) + "...");
       console.log("User data:", response.user);
       
-      // CRITICAL: Verify token was stored in localStorage
+      // Double-check token persistence to avoid half-logged-in states.
       const storedToken = localStorage.getItem('auth_token');
       if (!storedToken || storedToken !== response.access_token) {
         console.error("ERROR: Token storage verification failed");
@@ -97,41 +97,40 @@ const Login = () => {
         throw new Error("Failed to store authentication token");
       }
       
-      // ALERT: Token stored successfully
+      // Token storage check passed.
       console.log("TOKEN STORED: Successfully saved to localStorage");
       
-      // CRITICAL: Only update auth state if ALL checks passed
+      // Update app auth state only after all safeguards pass.
       console.log("AUTH STATE: Setting isLoggedIn = true");
       setIsLoggedIn(true);
       setUser(response.user);
       
-      // Show success message
+      // Let the user know login succeeded.
       setSuccess("Successfully logging");
       console.log("LOGIN SUCCESSFUL!");
       
-      // Navigate to home ONLY after successful authentication
-      // Small delay to show success message
+      // Short delay so the success message is visible before redirect.
       setTimeout(() => {
         navigate("/");
       }, 500);
     } catch (err: any) {
-      // ALERT: Error caught
+      // If anything fails, handle it in one place.
       console.error("ERROR CAUGHT:", err);
       
-      // Clear success message on error
+      // Remove stale success UI when an error occurs.
       setSuccess("");
       
-      // Determine response code
+      // Try to read status code from different error shapes.
       const statusCode = err?.status || err?.response?.status || "Unknown";
       console.log("Response Status Code:", statusCode);
       
-      // CRITICAL: Ensure we're logged out on ANY error
+      // Always force logout on failure to keep auth state clean.
       console.log("CLEARING AUTH STATE: Logging out due to error");
       apiClient.logout();
       setIsLoggedIn(false);
       setUser(null);
       
-      // CRITICAL: Verify tokens are cleared
+      // Extra safety: clear token manually if anything remains.
       const tokenAfterError = localStorage.getItem('auth_token');
       if (tokenAfterError) {
         console.error("SECURITY ISSUE: Token still exists after error - clearing now!");
@@ -139,10 +138,10 @@ const Login = () => {
         localStorage.removeItem('user');
       }
       
-      // Extract error message from backend response
+      // Start with a safe default message.
       let errorMessage = "Invalid email or password. Please check your credentials.";
       
-      // Properly extract error message
+      // Pull the most useful message from the error payload.
       if (err) {
         if (typeof err === 'string') {
           errorMessage = err;
@@ -158,28 +157,28 @@ const Login = () => {
         }
       }
       
-      // Handle 401 errors specifically
+      // Normalize 401 messaging so users get clear feedback.
       if (statusCode === 401) {
         if (errorMessage.includes("not registered")) {
-          // Keep the "Email not registered..." message
+          // Keep backend-specific message when it is already clear.
         } else if (errorMessage.includes("Incorrect password")) {
-          // Keep the "Incorrect password..." message
+          // Keep backend-specific message when it is already clear.
         } else {
           errorMessage = "Invalid email or password. Please check your credentials.";
         }
       }
       
-      // Ensure errorMessage is always a string
+      // Final guard: UI expects a string message.
       if (typeof errorMessage !== 'string') {
         errorMessage = "Invalid email or password. Please check your credentials.";
       }
       
-      // Show error message in UI
+      // Show the message in the login form.
       setError(errorMessage);
       console.error("ERROR MESSAGE DISPLAYED:", errorMessage);
       console.error("FULL ERROR OBJECT:", JSON.stringify(err, null, 2));
       
-      // DO NOT navigate on error - stay on login page
+      // Stay on this page so the user can fix inputs and retry.
     } finally {
       setLoading(false);
       console.log("LOGIN PROCESS COMPLETED");

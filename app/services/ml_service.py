@@ -3,7 +3,7 @@ import numpy as np
 from PIL import Image
 import io, os
 
-# Import ML scripts (they may rely on optional deps/APIs)
+# These ML imports can fail if optional dependencies are missing.
 
 def predict_irradiance(cloud_cover_pct: float, weather: Optional[Dict[str, Any]] = None) -> float:
     """Simple wrapper using provided ML logic; falls back to heuristic if model or deps unavailable."""
@@ -12,7 +12,7 @@ def predict_irradiance(cloud_cover_pct: float, weather: Optional[Dict[str, Any]]
         predictor = SolarIrradiancePredictor()
         return float(predictor.predict_from_features(cloud_cover_pct=cloud_cover_pct, weather=weather or {}))
     except Exception as e:
-        # Heuristic: clear sky ~ 1000 W/m2, scale by cloud cover
+        # Fallback estimate: start at clear-sky irradiance and reduce by cloud cover.
         clear_sky = 1000.0
         return max(0.0, clear_sky * (1.0 - (cloud_cover_pct/100.0)))
 
@@ -26,33 +26,33 @@ def detect_cloud_cover(image_bytes: bytes) -> float:
     try:
         from app.ml.cloud_detection import detect_cloud_cover as cd
         
-        # Optimize memory usage by resizing large images
+        # Open image in RGB and keep memory use predictable.
         img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
         
-        # Resize if image is too large to prevent memory issues
+        # Downscale very large images before processing.
         max_size = 1024  # Maximum dimension
         if img.width > max_size or img.height > max_size:
             img.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
         
-        arr = np.array(img, dtype=np.uint8)  # Use uint8 to save memory
+        arr = np.array(img, dtype=np.uint8)  # uint8 keeps memory lower than wider types.
         return float(cd(arr))
         
     except Exception as e:
         print(f"Cloud detection error: {e}")
-        # Fallback: naive grayscale threshold with memory optimization
+        # Backup method: simple grayscale thresholding.
         try:
             img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
             
-            # Resize for memory efficiency
+            # Downscale again for the fallback path.
             max_size = 512
             if img.width > max_size or img.height > max_size:
                 img.thumbnail((max_size, max_size), Image.Resampling.LANCZOS)
             
-            arr = np.array(img, dtype=np.float32)  # Use float32 instead of float64
+            arr = np.array(img, dtype=np.float32)  # float32 is enough precision here.
             gray = arr.mean(axis=2)
             thr = np.percentile(gray, 70)
             mask = (gray > thr).mean()
             return float(mask * 100.0)
         except Exception as fallback_error:
             print(f"Fallback cloud detection error: {fallback_error}")
-            return 50.0  # Default moderate cloud cover
+            return 50.0  # Last-resort default to a moderate cloud value.

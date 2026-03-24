@@ -2,7 +2,7 @@
 import os
 import sys
 
-# Set environment variables if not set
+# If env vars are missing, set local-friendly defaults.
 if not os.getenv("POSTGRES_PASSWORD"):
     print("WARNING: POSTGRES_PASSWORD not set. Please set it or run from start.ps1")
     print("Setting default values...")
@@ -23,7 +23,7 @@ def main():
     print("=" * 50)
     
     try:
-        # Test database connection
+        # First, make sure the database connection works.
         print("\nTesting database connection...")
         Base.metadata.create_all(bind=engine)
         print("✓ Database connection successful")
@@ -37,7 +37,7 @@ def main():
     
     db = SessionLocal()
     try:
-        # Check existing users
+        # Check what users already exist.
         users = db.query(User).all()
         print(f"\nFound {len(users)} users in database:")
         
@@ -47,13 +47,13 @@ def main():
         else:
             print("  No users found!")
         
-        # Seed users if none exist
+        # If the table is empty, add demo users.
         if len(users) == 0:
             print("\nSeeding demo users...")
             count = seed_dummy_users(db)
             print(f"✓ Created {count} demo users")
             
-            # Verify the users were created
+            # Query again so we can confirm user creation.
             users = db.query(User).all()
             print(f"\nNow found {len(users)} users:")
             for user in users:
