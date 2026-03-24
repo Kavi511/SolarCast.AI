@@ -53,132 +53,131 @@ The application features JWT-based authentication and authorization, interactive
 
 ## 📁 Project Structure
 
-```
+
+```text
 SolarCastAI/
-│
-├── .gitignore                          # Git ignore rules
-├── requirements.txt                    # Backend Python dependencies
-├── README.md                          # This file
-├── CLEAN_FOLDER_STRUCTURE.md          # Detailed folder structure
-│
-├── app/                                # Backend Application
-│   ├── __init__.py
-│   ├── main.py                         # FastAPI application entry point
-│   │
-│   ├── api/                            # API Routes
-│   │   ├── __init__.py
-│   │   ├── auth.py                     # Authentication endpoints
-│   │   ├── ml.py                       # ML prediction endpoints
-│   │   └── sites.py                    # Site management endpoints
-│   │
-│   ├── core/                           # Core utilities
-│   │   ├── __init__.py
-│   │   ├── deps.py                     # Dependency injection
-│   │   └── security.py                 # Security utilities (JWT, hashing)
-│   │
-│   ├── db/                             # Database layer
-│   │   ├── __init__.py
-│   │   ├── database.py                 # Database connection & session
-│   │   └── seed.py                     # Database seeding
-│   │
-│   ├── ml/                             # Machine Learning Module
-│   │   ├── __init__.py
-│   │   ├── best_model.pth              # Trained ML model (KEEP)
-│   │   ├── cloud_detection.py          # Cloud detection model
-│   │   ├── cloud_forecasting.py        # Cloud forecasting model
-│   │   ├── gee_config.py               # Google Earth Engine config
-│   │   ├── gee_config_simple.py        # Simplified GEE config
-│   │   ├── requirements.txt            # ML-specific dependencies
-│   │   ├── setup_gee.py                # GEE setup script
-│   │   ├── solar_energy_output_prediction.py
-│   │   └── solar_irradiance_prediction.py
-│   │
-│   ├── models/                         # SQLAlchemy models
-│   │   ├── __init__.py
-│   │   └── models.py                   # Database models
-│   │
-│   ├── schemas/                        # Pydantic schemas
-│   │   ├── __init__.py
-│   │   └── schemas.py                  # Request/Response schemas
-│   │
-│   └── services/                       # Business logic
-│       ├── __init__.py
-│       ├── crud.py                     # CRUD operations
-│       ├── ml_service.py               # ML service layer
-│       └── model_monitor.py            # Model monitoring
-│
-├── Frontend/                           # Frontend Application
-│   ├── Main/                           # React + TypeScript + Vite
-│   │   ├── src/
-│   │   │   ├── components/             # React components
-│   │   │   │   ├── ui/                 # UI component library (shadcn)
-│   │   │   │   ├── ApiStatus.tsx
-│   │   │   │   ├── CTASection.tsx
-│   │   │   │   ├── DataSourcesSection.tsx
-│   │   │   │   ├── FeaturesSection.tsx
-│   │   │   │   ├── Footer.tsx
-│   │   │   │   ├── Header.tsx
-│   │   │   │   ├── HeroSection.tsx
-│   │   │   │   ├── MLPredictor.tsx
-│   │   │   │   ├── ProtectedRoute.tsx
-│   │   │   │   ├── SitesManager.tsx
-│   │   │   │   └── TechnologySection.tsx
-│   │   │   │
-│   │   │   ├── contexts/               # React contexts
-│   │   │   │   ├── AuthContext.tsx
-│   │   │   │   └── ThemeContext.tsx
-│   │   │   │
-│   │   │   ├── hooks/                  # Custom React hooks
-│   │   │   │   ├── use-api.ts
-│   │   │   │   ├── use-mobile.tsx
-│   │   │   │   └── use-toast.ts
-│   │   │   │
-│   │   │   ├── lib/                    # Utility libraries
-│   │   │   │   ├── api.ts              # API client
-│   │   │   │   └── utils.ts            # Utility functions
-│   │   │   │
-│   │   │   ├── pages/                  # Page components
-│   │   │   │   ├── Dashboard.tsx
-│   │   │   │   ├── Satellite.tsx
-│   │   │   │   ├── Weather.tsx
-│   │   │   │   ├── Solar.tsx
-│   │   │   │   ├── Advanced.tsx
-│   │   │   │   └── ... (other pages)
-│   │   │   │
-│   │   │   ├── assets/                 # Static assets
-│   │   │   │   ├── earth-hero.jpg
-│   │   │   │   ├── hero-earth-satellite.jpg
-│   │   │   │   └── ... (other images)
-│   │   │   │
-│   │   │   ├── App.css
-│   │   │   ├── App.tsx                 # Main App component
-│   │   │   ├── index.css               # Global styles
-│   │   │   ├── main.tsx                # React entry point
-│   │   │   └── vite-env.d.ts          # Vite type definitions
-│   │   │
-│   │   ├── public/                     # Public static files
-│   │   │   └── robots.txt
-│   │   │
-│   │   ├── components.json             # shadcn/ui config
-│   │   ├── env.example                # Environment variables example
-│   │   ├── eslint.config.js           # ESLint configuration
-│   │   ├── index.html                  # HTML entry point
-│   │   ├── package.json                # Node dependencies
-│   │   ├── package-lock.json           # Lock file (or bun.lockb)
-│   │   ├── postcss.config.js          # PostCSS configuration
-│   │   ├── README.md                   # Frontend documentation
-│   │   ├── tailwind.config.ts          # Tailwind CSS configuration
-│   │   ├── tsconfig.app.json          # TypeScript config (app)
-│   │   ├── tsconfig.json              # TypeScript base config
-│   │   ├── tsconfig.node.json         # TypeScript config (node)
-│   │   └── vite.config.ts              # Vite build configuration
-│   │
-│   └── package-lock.json               # Root package lock (if exists)
-│
-└── scripts/                            # Utility scripts (OPTIONAL)
-    ├── check_users.py                  # Database user checker
-    └── force_seed_users.py             # Database seeder
+|
+|-- .gitignore
+|-- requirements.txt
+|-- README.md
+|
+|-- app/
+|   |-- __init__.py
+|   |-- main.py
+|   |
+|   |-- api/
+|   |   |-- __init__.py
+|   |   |-- auth.py
+|   |   |-- ml.py
+|   |   `-- sites.py
+|   |
+|   |-- core/
+|   |   |-- __init__.py
+|   |   |-- deps.py
+|   |   `-- security.py
+|   |
+|   |-- db/
+|   |   |-- __init__.py
+|   |   |-- database.py
+|   |   `-- seed.py
+|   |
+|   |-- ml/
+|   |   |-- __init__.py
+|   |   |-- best_model.pth
+|   |   |-- cloud_detection.py
+|   |   |-- cloud_forecasting.py
+|   |   |-- gee_config.py
+|   |   |-- gee_config_simple.py
+|   |   |-- requirements.txt
+|   |   |-- setup_gee.py
+|   |   |-- solar_energy_output_prediction.py
+|   |   `-- solar_irradiance_prediction.py
+|   |
+|   |-- models/
+|   |   |-- __init__.py
+|   |   `-- models.py
+|   |
+|   |-- schemas/
+|   |   |-- __init__.py
+|   |   `-- schemas.py
+|   |
+|   `-- services/
+|       |-- __init__.py
+|       |-- crud.py
+|       |-- ml_service.py
+|       `-- model_monitor.py
+|
+|-- Frontend/
+|   |-- Main/
+|   |   |-- src/
+|   |   |   |-- components/
+|   |   |   |   |-- ui/
+|   |   |   |   |-- ApiStatus.tsx
+|   |   |   |   |-- CTASection.tsx
+|   |   |   |   |-- DataSourcesSection.tsx
+|   |   |   |   |-- FeaturesSection.tsx
+|   |   |   |   |-- Footer.tsx
+|   |   |   |   |-- Header.tsx
+|   |   |   |   |-- HeroSection.tsx
+|   |   |   |   |-- MLPredictor.tsx
+|   |   |   |   |-- ProtectedRoute.tsx
+|   |   |   |   |-- SitesManager.tsx
+|   |   |   |   `-- TechnologySection.tsx
+|   |   |   |
+|   |   |   |-- contexts/
+|   |   |   |   |-- AuthContext.tsx
+|   |   |   |   `-- ThemeContext.tsx
+|   |   |   |
+|   |   |   |-- hooks/
+|   |   |   |   |-- use-api.ts
+|   |   |   |   |-- use-mobile.tsx
+|   |   |   |   `-- use-toast.ts
+|   |   |   |
+|   |   |   |-- lib/
+|   |   |   |   |-- api.ts
+|   |   |   |   `-- utils.ts
+|   |   |   |
+|   |   |   |-- pages/
+|   |   |   |   |-- Dashboard.tsx
+|   |   |   |   |-- Satellite.tsx
+|   |   |   |   |-- Weather.tsx
+|   |   |   |   |-- Solar.tsx
+|   |   |   |   `-- Advanced.tsx
+|   |   |   |
+|   |   |   |-- assets/
+|   |   |   |   |-- earth-hero.jpg
+|   |   |   |   `-- hero-earth-satellite.jpg
+|   |   |   |
+|   |   |   |-- App.css
+|   |   |   |-- App.tsx
+|   |   |   |-- index.css
+|   |   |   |-- main.tsx
+|   |   |   `-- vite-env.d.ts
+|   |   |
+|   |   |-- public/
+|   |   |   `-- robots.txt
+|   |   |
+|   |   |-- components.json
+|   |   |-- env.example
+|   |   |-- eslint.config.js
+|   |   |-- index.html
+|   |   |-- package.json
+|   |   |-- package-lock.json
+|   |   |-- postcss.config.js
+|   |   |-- README.md
+|   |   |-- tailwind.config.ts
+|   |   |-- tsconfig.app.json
+|   |   |-- tsconfig.json
+|   |   |-- tsconfig.node.json
+|   |   `-- vite.config.ts
+|   |
+|   `-- package-lock.json
+|
+`-- scripts/
+    |-- check_users.py
+    `-- force_seed_users.py
 ```
+
 
 ---
 
