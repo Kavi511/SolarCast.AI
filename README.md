@@ -512,7 +512,8 @@ python scripts/force_seed_users.py
 
 ## 📄 License
 
-This project is proprietary. All rights reserved.
+This project is licensed under the MIT License.
+See the `LICENSE` file for full details.
 
 ---
 
