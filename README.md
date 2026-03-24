@@ -289,7 +289,7 @@ OPENWEATHERMAP_API_KEY=your-api-key-here
 ```bash
 # The database tables will be created automatically on first run
 # Or manually seed users:
-python check_users.py
+python scripts/check_users.py
 ```
 
 ---
@@ -422,10 +422,10 @@ npm run test
 
 ```bash
 # Check database users
-python check_users.py
+python scripts/check_users.py
 
 # Force seed users (resets database)
-python force_seed_users.py
+python scripts/force_seed_users.py
 ```
 
 ---
