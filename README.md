@@ -444,7 +444,7 @@ python scripts/force_seed_users.py
 
 ## 🚢 Deployment
 
-> **Note:** The deployment workflow below has **not been fully implemented yet** during the current development phase.  
+> **Note:** The Docker Deployment workflow below has **not been fully implemented yet** during the current development phase.  
 > These items are planned as **future development** and will be completed in upcoming iterations.
 
 ### Docker Deployment (Recommended)
