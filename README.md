@@ -83,7 +83,7 @@ SolarCastAI/
 |   |
 |   |-- ml/
 |   |   |-- __init__.py
-|   |   |-- best_model.pth
+|   |   |-- best_model.pth (local model file, usually git-ignored)
 |   |   |-- cloud_detection.py
 |   |   |-- cloud_forecasting.py
 |   |   |-- gee_config.py
@@ -396,8 +396,8 @@ For detailed API documentation, visit http://localhost:8000/docs after starting 
 ### ML Model Configuration
 
 ML models are located in `app/ml/`:
-- `best_model.pth` - Pre-trained model weights
-- Model configuration is handled in respective Python files
+- `best_model.pth` - Pre-trained model weights (kept locally in many setups)
+- Model logic and configuration are handled in the ML Python files
 
 ---
 
@@ -519,7 +519,7 @@ This project is proprietary. All rights reserved.
 ## 🆘 Support
 
 For issues and questions:
-- Check the documentation in `CLEAN_FOLDER_STRUCTURE.md`
+- Check this `README.md` first
 - Review API documentation at `/docs` endpoint
 - Contact the development team
 
